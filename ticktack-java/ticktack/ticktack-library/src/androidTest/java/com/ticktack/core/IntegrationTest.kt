@@ -27,7 +27,7 @@ class IntegrationTest {
           .build(appContext)
       )
 
-      tickTackStore = TickTackStore.getDefaultInstance()
+      tickTackStore = TickTackStore.getDefaultInstance()!!
     }
 
     @JvmStatic
@@ -96,12 +96,10 @@ class IntegrationTest {
 
     counter.addListener(object : Counter.ChangeListener{
       override fun onValueChanged(value: Long) {
-        assertEquals(1, value)
+        assertEquals(0, value)
         set = true
       }
     })
-
-    counter++
 
     assert(set)
   }

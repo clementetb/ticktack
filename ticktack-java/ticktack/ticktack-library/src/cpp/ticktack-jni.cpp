@@ -50,6 +50,19 @@ Java_com_ticktack_core_TickTackStore_remove(JNIEnv *env, jobject thiz, jlong han
   delete tickTackStore;
 }
 
+JNIEXPORT void JNICALL
+Java_com_ticktack_core_TickTackStore_close(JNIEnv *env, jobject thiz, jlong handler) {
+  TickTackStore *tickTackStore = (TickTackStore *) reinterpret_cast<void *>(handler);
+
+  if (tickTackStore == nullptr) {
+    jclass Exception = env->FindClass("java/lang/Exception");
+    env->ThrowNew(Exception, "Handler does not point to a TickTackStore");
+    return;
+  }
+
+  delete tickTackStore;
+}
+
 JNIEXPORT jlong JNICALL
 Java_com_ticktack_core_Counter_increment(JNIEnv *env, jobject thiz, jlong handler) {
   Counter *counter = (Counter *) reinterpret_cast<void *>(handler);
@@ -60,23 +73,28 @@ Java_com_ticktack_core_Counter_increment(JNIEnv *env, jobject thiz, jlong handle
     return 0;
   }
 
-  (*counter)++;
+  try {
+    (*counter)++;
+  } catch (std::runtime_error &error) {
+    jclass jc = env->FindClass("java/lang/IllegalStateException");
+    env->ThrowNew(jc, error.what());
+    return 0;
+  }
 
   auto clazz = env->FindClass("com/ticktack/core/TickTackStore");
   auto method = env->GetStaticMethodID(clazz,
                                        "onDataChange",
                                        "(Ljava/lang/String;J)V");
 
-//  env->CallStaticVoidMethod(clazz, method,
-//                            env->NewStringUTF("hello"),
-//                            jlong((unsigned long) *counter));
+  env->CallStaticVoidMethod(clazz, method,
+                            env->NewStringUTF(counter->getKey().c_str()),
+                            jlong((unsigned long) *counter));
 
   return (unsigned long) *counter;
 }
 
 JNIEXPORT jlong JNICALL
 Java_com_ticktack_core_Counter_getValue(JNIEnv *env, jobject thiz, jlong handler) {
-  // TODO: implement getValue()
   Counter *counter = (Counter *) reinterpret_cast<void *>(handler);
 
   if (counter == nullptr) {

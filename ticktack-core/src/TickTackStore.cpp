@@ -27,6 +27,13 @@ TickTackStore::TickTackStore(const string dataPath) : dataPath(dataPath) {
 }
 
 TickTackStore::~TickTackStore() {
+    map<string, Counter*>::iterator it;
+
+    for ( it = counterMap.begin(); it != counterMap.end(); it++ )
+    {
+        Counter *counter = it->second;
+        delete counter;
+    }
 }
 
 /**

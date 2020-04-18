@@ -40,9 +40,16 @@ namespace TickTack {
          */
         explicit operator unsigned long();
 
+        /**
+         * Returns the counter's key
+         *
+         * @return
+         */
+        const string &getKey();
+
     private:
         TickTackStore &tickTackStore;
-        string key;
+        const string key;
         atomic_ulong value;
     };
 }

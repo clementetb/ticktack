@@ -3,12 +3,15 @@
 //
 
 #include <climits>
+#include <utility>
 
 #include "TickTackStore.h"
+#include "Counter.h"
+
 
 using namespace TickTack;
 
-Counter::Counter(TickTackStore &tickTackStore, string key, unsigned long value) : tickTackStore(tickTackStore), key(key), value(value) {
+Counter::Counter(TickTackStore &tickTackStore, string key, unsigned long value) : tickTackStore(tickTackStore), key(std::move(key)), value(value) {
 
 }
 
@@ -40,4 +43,8 @@ Counter &Counter::operator++(int ignore) {
 
     tickTackStore.writeChanges();
     return *this;
+}
+
+const string &Counter::getKey() {
+    return key;
 }
