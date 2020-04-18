@@ -1,0 +1,11 @@
+task installTickTack(type:GradleBuild) {
+    group = 'Install'
+    description = 'Install the artifacts of TickTack into mavenLocal()'
+    // dependsOn buildTickTack
+    buildFile = file('ticktack/build.gradle')
+    tasks = ['assemble', 'publishToMavenLocal']
+    if (project.hasProperty('buildTargetABIs')) {
+        startParameter.projectProperties += [buildTargetABIs: project.getProperty('buildTargetABIs')]
+    }
+}
+

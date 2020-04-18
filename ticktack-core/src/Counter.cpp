@@ -2,8 +2,9 @@
 // Created by clemente on 18/4/20.
 //
 
-#include "Counter.h"
 #include <climits>
+
+#include "TickTackStore.h"
 
 using namespace TickTack;
 
