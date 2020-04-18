@@ -1,0 +1,5 @@
+<resources>
+  <string name="app_name">Button Counter</string>
+  <string name="counter_toggle_timer">Toggle timer</string>
+  <string name="counter_increment">+1</string>
+</resources>
