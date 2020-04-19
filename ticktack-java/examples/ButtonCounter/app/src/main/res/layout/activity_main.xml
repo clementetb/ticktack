@@ -18,13 +18,13 @@
       android:id="@+id/counter_display"
       android:layout_width="match_parent"
       android:layout_height="120dp"
-      android:gravity="center"
-      app:autoSizeTextType="uniform"
-      app:autoSizeMinTextSize="1sp"
-      app:autoSizeMaxTextSize="400dp"
-      app:autoSizeStepGranularity="2sp"
       android:layout_centerInParent="true"
-      android:text="@{viewmodel.ticks, default=dfasdf}" />
+      android:gravity="center"
+      android:text="@{viewmodel.ticks}"
+      app:autoSizeMaxTextSize="400dp"
+      app:autoSizeMinTextSize="1sp"
+      app:autoSizeStepGranularity="2sp"
+      app:autoSizeTextType="uniform" />
 
     <LinearLayout
       android:layout_width="wrap_content"
@@ -34,19 +34,21 @@
       android:layout_marginTop="48dp">
 
       <com.google.android.material.button.MaterialButton
-        android:id="@+id/toggle_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:onClick="@{viewmodel.onToggleTimer}"
-        android:text="@string/counter_toggle_timer" />
-
-      <com.google.android.material.button.MaterialButton
         android:id="@+id/increment_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/counter_display"
+        android:layout_marginRight="8dp"
         android:onClick="@{viewmodel.onIncrementCounter}"
         android:text="@string/counter_increment" />
+
+      <com.google.android.material.button.MaterialButton
+        android:id="@+id/toggle_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:onClick="@{viewmodel.onToggleTimer}"
+        android:text="@string/counter_toggle_timer" />
     </LinearLayout>
   </RelativeLayout>
 </layout>
