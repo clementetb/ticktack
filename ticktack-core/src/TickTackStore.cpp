@@ -24,9 +24,13 @@ TickTackStore::TickTackStore(const string dataPath) : dataPath(dataPath) {
 
         file.close();
     }
+
+    sem_init(&mutex, 0, 1);
 }
 
 TickTackStore::~TickTackStore() {
+    sem_wait(&mutex);
+
     map<string, Counter*>::iterator it;
 
     for ( it = counterMap.begin(); it != counterMap.end(); it++ )
@@ -34,6 +38,8 @@ TickTackStore::~TickTackStore() {
         Counter *counter = it->second;
         delete counter;
     }
+
+    sem_destroy(&mutex);
 }
 
 /**
@@ -64,7 +70,8 @@ Counter &TickTackStore::getOrCreate(string key) {
  * TODO: we could do the write on the background
  */
 void TickTackStore::writeChanges() {
-    // this happens in a thread
+    sem_wait(&mutex);
+
     ofstream file = ofstream(dataPath, std::ofstream::out | std::ofstream::trunc);
 
     map<string, Counter*>::iterator it;
@@ -75,4 +82,6 @@ void TickTackStore::writeChanges() {
     }
 
     file.close();
+
+    sem_post(&mutex);
 }

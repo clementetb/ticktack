@@ -9,6 +9,7 @@
 #include <iostream>
 #include <fstream>
 #include <map>
+#include <semaphore.h>
 #include "Counter.h"
 
 using namespace std;
@@ -49,6 +50,8 @@ namespace TickTack {
     private:
         string dataPath;
         map<string, Counter *> counterMap;
+
+        sem_t mutex;
     };
 }
 
